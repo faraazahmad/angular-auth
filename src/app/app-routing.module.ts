@@ -4,6 +4,7 @@ import { AuthComponent } from './auth/auth.component';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { ResourceComponent } from './resource/resource.component';
+import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
   {
@@ -16,7 +17,8 @@ const routes: Routes = [
   },
   {
     path: "resource",
-    component: ResourceComponent
+    component: ResourceComponent,
+    canActivate: [AuthGuard]
   }
 ];
 

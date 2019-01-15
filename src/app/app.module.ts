@@ -10,6 +10,8 @@ import { AuthComponent } from './auth/auth.component';
 import { HomeComponent } from './home/home.component';
 import { AuthService } from './auth.service';
 import { ResourceComponent } from './resource/resource.component';
+import { ResourceService } from './resource.service';
+import { AuthGuard } from './auth.guard';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import { ResourceComponent } from './resource/resource.component';
     FormsModule
   ],
   providers: [
-    AuthService
+    AuthService,
+    ResourceService,
+    AuthGuard
   ],
   bootstrap: [AppComponent]
 })
