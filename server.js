@@ -1,7 +1,10 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
+const jwtVerifier = require('express-jwt');
+const validator = require('express-validator');
+const bodyParser = require('body-parser');
 
-const app = express();
+var app = express();
 const port = 3000;
 
 const jwtSecret = 'dundermifflin';
@@ -17,6 +20,16 @@ const user = {
 
 // -------------------------------------------------------------------------------
 
+function createToken() {
+    var token = jwt.sign({ userID: user.username }, jwtSecret, jwtOptions);
+    return token;
+}
+
+// -------------------------------------------------------------------------------
+
+app.use(validator());
+app.use(bodyParser.urlencoded({ extended: false }));
+
 app.use((err, req, res, next) => {
     if (err.name == "UnauthorizedError") {
         res.status(500).send(err.message);
@@ -28,24 +41,24 @@ app.get("/", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-    const { username, password } = req.body;
-    if (username == user.username && password == user.password) {
-        // generate token and send
-        res.send(createToken());
+    try {
+        const { username, password } = req.body;
+        if (username == user.username && password == user.password) {
+            // generate token and send
+            res.send(createToken());
+        }
+        else {
+            res.sendStatus(400);
+        }
     }
-    else {
-        res.sendStatus(400);
+    catch (error) {
+        throw error;
     }
 });
 
-app.get("/resource", jwtVerifier({ secret: secret }), (req, res) => {
+app.get("/resource", jwtVerifier({ secret: jwtSecret }), (req, res) => {
     res.send("Where we\'re going, we don\'t need roads.");
 });
-
-function createToken() {
-    var token = jwt.sign({ userID: user.username }, jwtSecret, jwtOptions);
-    return token;
-}
 
 app.listen(port, () => {
     console.log(`server running on localhost:${port}`);
