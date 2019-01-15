@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { AuthService } from "../auth.service";
 
 @Component({
   selector: 'app-auth',
@@ -7,23 +7,19 @@ import { HttpClient } from '@angular/common/http';
   styleUrls: ['./auth.component.scss']
 })
 export class AuthComponent implements OnInit {
+  loginUserData = {}
 
-  username: string;
-  password: string;
-
-  show: boolean = false;
-  
-  constructor() { }
+  constructor(private _auth: AuthService) { }
 
   ngOnInit() {
   }
 
-  login() {
-    console.log(this.username + ' ' + this.password);
-  }
-
-  toggle() {
-    this.show = !this.show;
+  loginUser() {
+    this._auth.loginUser(this.loginUserData)
+    .subscribe(
+      res => console.log(res),
+      err => console.log(err)
+    );
   }
 
 }

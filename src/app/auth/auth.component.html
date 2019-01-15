@@ -9,19 +9,15 @@
 <form>
   <div>
     <label>Enter username</label><br>
-    <input name="username" type="text" [(ngModel)] = "username">
+    <input name="username" type="text" [(ngModel)] = "loginUserData.username">
   </div>
   <br>
   <div>
     <label>Enter password</label><br>
-    <input name="password" type="password" [(ngModel)] = "password">
+    <input name="password" type="password" [(ngModel)] = "loginUserData.password">
   </div>
   <br>
   <div>
-    <button (click)="toggle()">Log In</button>
+    <button (click)="loginUser()">Log In</button>
   </div>
-
-  <p>
-    {{ show }}
-  </p>
 </form>

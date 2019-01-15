@@ -1,5 +1,6 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
+const cors = require("cors");
 const jwtVerifier = require('express-jwt');
 const validator = require('express-validator');
 const bodyParser = require('body-parser');
@@ -27,8 +28,10 @@ function createToken() {
 
 // -------------------------------------------------------------------------------
 
+app.use(cors());
 app.use(validator());
 app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.use((err, req, res, next) => {
     if (err.name == "UnauthorizedError") {
@@ -45,10 +48,10 @@ app.post("/login", (req, res) => {
         const { username, password } = req.body;
         if (username == user.username && password == user.password) {
             // generate token and send
-            res.send(createToken());
+            res.send({ token: createToken() });
         }
         else {
-            res.sendStatus(400);
+            res.sendStatus(401);
         }
     }
     catch (error) {
