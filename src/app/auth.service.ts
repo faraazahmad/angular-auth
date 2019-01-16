@@ -16,4 +16,8 @@ export class AuthService {
     // !! prefixed to return boolean value
     return !!localStorage.getItem('token');
   }
+
+  getToken() : string {
+    return localStorage.getItem('token');
+  }
 }
