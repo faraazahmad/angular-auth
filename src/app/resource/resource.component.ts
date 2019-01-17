@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ResourceService } from '../resource.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-resource',
@@ -9,13 +11,22 @@ import { ResourceService } from '../resource.service';
 export class ResourceComponent implements OnInit {
   specialResource: string;
 
-  constructor(private _resourceService: ResourceService) { }
+  constructor(private _resourceService: ResourceService,
+              private _router: Router) { }
 
   ngOnInit() {
     this._resourceService.getResource()
     .subscribe(
       res => this.specialResource = res.resource,
-      err => console.log(err)
+      err => {
+        if (err instanceof HttpErrorResponse) {
+          if (err.status === 500) {
+            console.log(500);
+            localStorage.removeItem('token');
+            this._router.navigate(['/login']);
+          }
+        }
+      }
     );
   }
 
