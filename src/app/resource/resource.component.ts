@@ -21,7 +21,6 @@ export class ResourceComponent implements OnInit {
       err => {
         if (err instanceof HttpErrorResponse) {
           if (err.status === 500) {
-            console.log(500);
             localStorage.removeItem('token');
             this._router.navigate(['/login']);
           }
