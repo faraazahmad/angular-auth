@@ -76,7 +76,7 @@ app.post("/login", (req, res) => {
 });
 
 app.get("/resource", verifyToken, (req, res) => {
-    res.json("Where we\'re going, we don\'t need roads.");
+    res.send({ resource: "Roads? Where we\'re going, we don\'t need roads." });
 });
 
 app.listen(port, () => {
